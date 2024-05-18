@@ -18,10 +18,13 @@
 	<RadioList ref="list" v-if="!currentSet" name="marker-set" :aria-labelledby="ariaLabelledby">
 		<template v-for="[id, markerSet] in markerSets" :key="id">
 			<input :id="`marker-set-${id}`" type="radio" name="marker-set" v-model="currentSet" v-bind:value="markerSet">
-			<label :for="`marker-set-${id}`">
-				<img v-if="markerSet.iconUrl" width="16" height="16" class="marker__icon" :src="markerSet.iconUrl" alt="" />
-				<span>{{ markerSet.label || id }}</span>
-				<span>{{ markerCounts.get(markerSet) }} Marker(s)</span>
+			<label :for="`marker-set-${id}`" class="marker">
+				<span>
+					<img v-if="markerSet.iconUrl" width="16" height="16" class="marker__icon" :src="markerSet.iconUrl" alt="" />
+					<SvgIcon v-else name="marker_point" class="marker__icon"></SvgIcon>
+					{{ markerSet.label || id }}
+				</span>
+				<!-- <span>{{ markerCounts.get(markerSet) }} Marker(s)</span> -->
 			</label>
 		</template>
 	</RadioList>
@@ -164,5 +167,18 @@ export default defineComponent({
 		text-overflow: ellipsis;
 		overflow: hidden;
 		margin: 0;
+	}
+
+	input[type=radio] + .marker {
+		padding-left: 3.9rem;
+
+		.marker__icon {
+			max-width: 1.6rem;
+			position: absolute;
+			top: 0;
+			left: 0.8rem;
+			bottom: 0;
+			margin: auto;
+		}
 	}
 </style>
