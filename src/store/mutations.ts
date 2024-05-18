@@ -496,7 +496,20 @@ export const mutations: MutationTree<State> & Mutations = {
 		}
 
 		state.ui.previouslyVisibleElements.add(element);
-		newState ? state.ui.visibleElements.add(element) : state.ui.visibleElements.delete(element);
+		if (["servers", "players", "maps", "markers"].includes(element)) {
+	      	if (newState) {
+        		state.ui.visibleElements.forEach((el) => {
+		          	if (["servers", "players", "maps", "markers"].includes(el)) {
+            			state.ui.visibleElements.delete(el);
+		          	}
+        		});
+		        state.ui.visibleElements.add(element);
+			} else {
+				state.ui.visibleElements.delete(element);
+			}
+    	} else {
+    		newState ? state.ui.visibleElements.add(element) : state.ui.visibleElements.delete(element);
+	    }
 	},
 
 	[MutationTypes.SET_UI_ELEMENT_VISIBILITY](state: State, payload: {element: LiveAtlasUIElement, state: boolean}): void {

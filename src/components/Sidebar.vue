@@ -17,13 +17,21 @@
 <template>
 	<section class="sidebar" role="none" ref="sidebar">
 		<header class="sidebar__buttons">
-			<button ref="maps-button" v-if="mapCount > 1 || serverCount > 1" type="button"
+			<button ref="servers-button" v-if="serverCount > 1" type="button"
+              class="button--servers" data-section="servers"
+              :title="messageServers"
+              :aria-label="messageServers"
+              :aria-expanded="serversVisible"
+              @click="handleSectionClick" @keydown="handleSectionKeydown">
+				<SvgIcon ref="servers-icon" name="servers"></SvgIcon>
+			</button>
+			<button ref="maps-button" v-if="mapCount > 1" type="button"
               class="button--maps" data-section="maps"
-              :title="mapCount > 1 ? messageWorlds : messageServers"
-              :aria-label="mapCount > 1 ? messageWorlds : messageServers"
+              :title="messageWorlds"
+              :aria-label="messageWorlds"
               :aria-expanded="mapsVisible"
               @click="handleSectionClick" @keydown="handleSectionKeydown">
-				<SvgIcon ref="maps-icon" :name="mapCount > 1 ? 'maps' : 'servers'"></SvgIcon>
+				<SvgIcon ref="maps-icon" name="maps"></SvgIcon>
 			</button>
 			<button ref="markers-button" v-if="markerUIEnabled" type="button"
               class="button--markers" data-section="markers"
@@ -41,7 +49,7 @@
 			</button>
 		</header>
 		<div class="sidebar__content" @keydown="handleSidebarKeydown">
-			<ServersSection v-if="serverCount > 1" :hidden="!mapsVisible"></ServersSection>
+			<ServersSection v-if="serverCount > 1" :hidden="!serversVisible"></ServersSection>
 			<WorldsSection v-if="mapCount > 1" :hidden="!mapsVisible"></WorldsSection>
 			<MarkersSection v-if="previouslyVisible.has('markers')" :hidden="!markersVisible"></MarkersSection>
 			<PlayersSection v-if="playerMakersEnabled && previouslyVisible.has('players')" :hidden="!playersVisible"></PlayersSection>
@@ -98,6 +106,7 @@ export default defineComponent({
 			markerUIEnabled = computed(() => store.getters.markerUIEnabled),
 			playerMakersEnabled = computed(() => store.getters.playerMarkersEnabled),
 
+			serversVisible = computed(() => currentlyVisible.value.has('servers')),
 			playersVisible = computed(() => currentlyVisible.value.has('players')),
 			mapsVisible = computed(() => currentlyVisible.value.has('maps')),
 			markersVisible = computed(() => currentlyVisible.value.has('markers')),
@@ -163,6 +172,7 @@ export default defineComponent({
 			messagePlayers,
 
 			previouslyVisible,
+			serversVisible,
 			playersVisible,
 			mapsVisible,
 			markersVisible,
