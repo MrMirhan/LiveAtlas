@@ -41,18 +41,18 @@
               @click="handleSectionClick" @keydown="handleSectionKeydown">
 				<SvgIcon name="marker_point"></SvgIcon>
 			</button>
-			<button ref="players-button" v-if="playerMakersEnabled" type="button"
+			<!-- <button ref="players-button" v-if="playerMakersEnabled" type="button"
               class="button--players" data-section="players"
               :title="messagePlayers" :aria-label="messagePlayers" :aria-expanded="playersVisible"
               @click="handleSectionClick" @keydown="handleSectionKeydown">
 				<SvgIcon name="players"></SvgIcon>
-			</button>
+			</button> -->
 		</header>
 		<div class="sidebar__content" @keydown="handleSidebarKeydown">
 			<ServersSection v-if="serverCount > 1" :hidden="!serversVisible"></ServersSection>
 			<WorldsSection v-if="mapCount > 1" :hidden="!mapsVisible"></WorldsSection>
 			<MarkersSection v-if="previouslyVisible.has('markers')" :hidden="!markersVisible"></MarkersSection>
-			<PlayersSection v-if="playerMakersEnabled && previouslyVisible.has('players')" :hidden="!playersVisible"></PlayersSection>
+			<!-- <PlayersSection v-if="playerMakersEnabled && previouslyVisible.has('players')" :hidden="!playersVisible"></PlayersSection> -->
 			<FollowTargetSection v-if="following" :hidden="!followVisible" :target="following"></FollowTargetSection>
 		</div>
 	</section>
