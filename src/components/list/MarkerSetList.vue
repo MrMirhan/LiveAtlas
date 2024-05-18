@@ -45,7 +45,9 @@ import {nonReactiveState} from "@/store/state";
 import RadioList from "@/components/util/RadioList.vue";
 import MarkerList from "@/components/list/MarkerList.vue";
 import SvgIcon from "@/components/SvgIcon.vue";
-import {registerUpdateHandler, unregisterUpdateHandler} from "@/util/markers";
+import { registerUpdateHandler, unregisterUpdateHandler } from "@/util/markers";
+import {MutationTypes} from "@/store/mutation-types";
+import { store } from '@/store';
 
 export default defineComponent({
 	name: 'MarkerSetList',
@@ -91,6 +93,7 @@ export default defineComponent({
 		const onSubmenuKeydown = (e: KeyboardEvent) => {
 			if(e.key === 'Backspace') {
 				currentSet.value = undefined;
+				store.commit(MutationTypes.SET_CURRENT_MARKER_SET, undefined);
 				e.preventDefault();
 			}
 		}
@@ -110,7 +113,10 @@ export default defineComponent({
 		}
 
 		watch(props.markerSets, () => checkSets());
-		watch(currentSet, (newValue, oldValue) => nextTick(() => updateFocus(newValue, oldValue)));
+		watch(currentSet, (newValue, oldValue) => {
+			nextTick(() => updateFocus(newValue, oldValue));
+			store.commit(MutationTypes.SET_CURRENT_MARKER_SET, newValue);
+		});
 
 		onMounted(() => {
 			checkSets();

@@ -46,6 +46,7 @@ export default defineComponent({
 	setup(props) {
 		const store = useStore(),
 			markerSettings = computed(() => store.state.components.markers),
+			currentMarkerSet = computed(() => store.state.currentMarkerSet),
 			layerGroup = new LiveAtlasLayerGroup({
 				id: props.markerSet.id,
 				minZoom: props.markerSet.minZoom,
@@ -53,6 +54,28 @@ export default defineComponent({
 				showLabels: props.markerSet.showLabels || store.state.components.markers.showLabels,
 				priority: props.markerSet.priority,
 			});
+
+		watch(currentMarkerSet, newValue => {
+			if (newValue === undefined) {
+				// show all markers
+				layerGroup.update({
+					id: props.markerSet.id,
+					minZoom: props.markerSet.minZoom,
+					maxZoom: props.markerSet.maxZoom,
+					showLabels: props.markerSet.showLabels || store.state.components.markers.showLabels,
+					priority: props.markerSet.priority,
+				});
+			} else if (newValue.id !== props.markerSet.id) {
+				// hide current markers
+				layerGroup.update({
+					id: props.markerSet.id,
+					minZoom: props.markerSet.minZoom,
+					maxZoom: props.markerSet.maxZoom,
+					showLabels: false,
+					priority: props.markerSet.priority,
+				});
+			}
+		}, { deep: true });
 
 		watch(props.markerSet, newValue => {
 			if(newValue && layerGroup) {

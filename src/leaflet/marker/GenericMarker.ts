@@ -56,7 +56,7 @@ export class GenericMarker extends Marker {
 	}
 
 	removeLabel(): void {
-		this.options.icon.createLabel();
+		this.options.icon.createLabel(false);
 	}
 
 	onRemove(map: Map): this {

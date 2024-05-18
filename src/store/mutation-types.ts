@@ -41,6 +41,7 @@ export enum MutationTypes {
 	SET_CURRENT_MAP = 'setCurrentMap',
 	SET_CURRENT_LOCATION = 'setCurrentLocation',
 	SET_CURRENT_ZOOM = 'setCurrentZoom',
+	SET_CURRENT_MARKER_SET = 'setCurrentMarkerSet',
 	SET_PARSED_URL = 'setParsedUrl',
 	CLEAR_PARSED_URL = 'clearParsedUrl',
 

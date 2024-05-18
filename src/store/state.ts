@@ -63,6 +63,7 @@ export type State = {
 	maxPlayers: number;
 	markerSets: Map<string, LiveAtlasMarkerSet>;
 	invokedMarker: string | null;
+	currentMarkerSet: LiveAtlasMarkerSet | undefined;
 
 	chat: {
 		unread: number;
@@ -143,6 +144,7 @@ export const state: State = {
 
 	markerSets: new Map(), //Marker sets from world_markers.json, doesn't include the markers themselves for performance reasons
 	invokedMarker: null,
+	currentMarkerSet: undefined,
 
 	pendingMarkerUpdates: [],  //Pending updates to markers/areas/etc
 	pendingTileUpdates: [], //Pending updates to map tiles

@@ -57,6 +57,7 @@ export class GenericIcon extends Layer implements Icon<GenericIconOptions> {
 	private _label?: HTMLSpanElement;
 	private _container?: HTMLDivElement;
 	private _labelCreated: boolean = false;
+	private _showLabel: boolean = true;
 	private _onHover: EventListener = () => {
 		this.createLabel();
 	};
@@ -90,10 +91,11 @@ export class GenericIcon extends Layer implements Icon<GenericIconOptions> {
 		return div;
 	}
 
-	createLabel() {
-		if(!this._container || this._labelCreated) {
-			return;
-		}
+	createLabel(showLabel: boolean = true) {
+		this._showLabel = showLabel;
+		// if(!this._container || this._labelCreated) {
+		// 	return;
+		// }
 
 		this._image?.removeEventListener('mouseover', this._onHover);
 		this._label = markerLabel.cloneNode(false) as HTMLSpanElement;
@@ -158,6 +160,12 @@ export class GenericIcon extends Layer implements Icon<GenericIconOptions> {
 			} else if(this._label.textContent !== this.options.label) {
 				this._label.textContent = this.options.label;
 			}
+		}
+
+		if(this._showLabel) {
+			this._container.style.display = '';
+		} else {
+			this._container.style.display = 'none';
 		}
 	}
 }

@@ -78,6 +78,7 @@ export type Mutations<S = State> = {
 	[MutationTypes.SET_CURRENT_MAP](state: S, payload: CurrentMapPayload): void
 	[MutationTypes.SET_CURRENT_LOCATION](state: S, payload: Coordinate): void
 	[MutationTypes.SET_CURRENT_ZOOM](state: S, payload: number): void
+	[MutationTypes.SET_CURRENT_MARKER_SET](state: S, payload: LiveAtlasMarkerSet): void
 	[MutationTypes.SET_PARSED_URL](state: S, payload: LiveAtlasParsedUrl): void
 	[MutationTypes.CLEAR_PARSED_URL](state: S): void
 	[MutationTypes.SET_FOLLOW_TARGET](state: S, payload: LiveAtlasPlayer): void
@@ -441,6 +442,11 @@ export const mutations: MutationTree<State> & Mutations = {
 	//Sets the current zoom level of the map. This is called by the map itself, and calling elsewhere will not update the map.
 	[MutationTypes.SET_CURRENT_ZOOM](state: State, payload: number) {
 		state.currentZoom = payload;
+	},
+
+	//Sets the current marker set, which is used to filter markers
+	[MutationTypes.SET_CURRENT_MARKER_SET](state: State, payload: LiveAtlasMarkerSet) {
+		state.currentMarkerSet = payload;
 	},
 
 	//Sets the result of parsing the current map url, if present and valid
