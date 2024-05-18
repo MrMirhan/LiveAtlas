@@ -295,17 +295,27 @@ export function buildComponents(response: Configuration, config: DynmapUrlConfig
 
 	return components;
 }
+interface MarkerSetWithIcon extends MarkerSet {
+  icon?: string;
+}
 
-export function buildMarkerSet(id: string, data: MarkerSet): any {
-	return {
-		id,
-		label: data.label || "Unnamed set",
-		hidden: data.hide || false,
-		priority: data.layerprio || 0,
-		showLabels: data.showlabels || undefined,
-		minZoom: typeof data.minzoom !== 'undefined' && data.minzoom > -1 ? data.minzoom : undefined,
-		maxZoom: typeof data.maxzoom !== 'undefined' && data.maxzoom > -1 ? data.maxzoom : undefined,
-	}
+export function buildMarkerSet(id: string, data: MarkerSetWithIcon, config: DynmapUrlConfig): any {
+  return {
+    id,
+    label: data.label || "Unnamed set",
+    hidden: data.hide || false,
+    priority: data.layerprio || 0,
+    showLabels: data.showlabels || undefined,
+    minZoom:
+      typeof data.minzoom !== "undefined" && data.minzoom > -1
+        ? data.minzoom
+        : undefined,
+    maxZoom:
+      typeof data.maxzoom !== "undefined" && data.maxzoom > -1
+        ? data.maxzoom
+        : undefined,
+	iconUrl: `${config.markers}_markers_/${data.icon || "default"}.png`,
+  };
 }
 
 export function buildMarkers(data: any, list: Map<string, LiveAtlasMarker>, config: DynmapUrlConfig): void {
@@ -548,7 +558,7 @@ export function buildUpdates(data: Array<any>, lastUpdate: Date, config: DynmapU
 
 				if (entry.msg.startsWith("set")) {
 					if(!update.removed) {
-						update.payload = buildMarkerSet(set, entry);
+						update.payload = buildMarkerSet(set, entry, config);
 					}
 
 					updates.markerSets.push(Object.freeze(update as DynmapMarkerSetUpdate));

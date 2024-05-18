@@ -19,6 +19,7 @@
 		<template v-for="[id, markerSet] in markerSets" :key="id">
 			<input :id="`marker-set-${id}`" type="radio" name="marker-set" v-model="currentSet" v-bind:value="markerSet">
 			<label :for="`marker-set-${id}`">
+				<img v-if="markerSet.iconUrl" width="16" height="16" class="marker__icon" :src="markerSet.iconUrl" alt="" />
 				<span>{{ markerSet.label || id }}</span>
 				<span>{{ markerCounts.get(markerSet) }} Marker(s)</span>
 			</label>
