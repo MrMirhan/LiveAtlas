@@ -462,6 +462,7 @@ export const mutations: MutationTree<State> & Mutations = {
 	[MutationTypes.SET_VIEW_TARGET](state: State, target: LiveAtlasMapViewTarget) {
 		state.followTarget = undefined;
 		state.viewTarget = target;
+		state.invokedMarker = target.layerId!;
 	},
 
 	//Clear the follow target

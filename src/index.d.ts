@@ -89,6 +89,7 @@ interface LiveAtlasMapViewTarget {
 	map?: string;
 	zoom?: number;
 	options?: FitBoundsOptions;
+	layerId?: string;
 }
 
 interface LiveAtlasGlobalConfig {

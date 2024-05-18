@@ -79,9 +79,10 @@ export default defineComponent({
 			});
 
 		const pan = () => {
-			if(props.marker.type === LiveAtlasMarkerType.POINT) {
+			if (props.marker.type === LiveAtlasMarkerType.POINT) {
 				store.commit(MutationTypes.SET_VIEW_TARGET, {
 					location: props.marker.location,
+					layerId: props.marker.id,
 				});
 			} else {
 				store.commit(MutationTypes.SET_VIEW_TARGET, {

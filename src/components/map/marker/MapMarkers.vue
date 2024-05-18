@@ -42,6 +42,7 @@ export default defineComponent({
 	setup(props) {
 		const store = useStore(),
 			currentMap = computed(() => store.state.currentMap),
+			invokedMarker = computed(() => store.state.invokedMarker),
 			layers = Object.freeze(new Map()) as Map<string, Layer>;
 
 		let converter = currentMap.value!.locationToLatLng.bind(currentMap.value);
@@ -89,6 +90,16 @@ export default defineComponent({
 					for (const [id, area] of nonReactiveState.markers.get(props.set.id)!) {
 						updateMarkerLayer(layers.get(id), area, converter);
 					}
+				}
+			}
+		});
+
+		watch(invokedMarker, (newValue, oldValue) => {
+			if (newValue) {
+				const marker = layers.get(newValue);
+
+				if (marker) {
+					marker.openPopup();
 				}
 			}
 		});
