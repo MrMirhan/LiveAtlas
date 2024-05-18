@@ -23,7 +23,7 @@
               :aria-label="messageServers"
               :aria-expanded="serversVisible"
               @click="handleSectionClick" @keydown="handleSectionKeydown">
-				<SvgIcon ref="servers-icon" name="servers"></SvgIcon>
+				{{ currentServer }}
 			</button>
 			<button ref="maps-button" v-if="mapCount > 1" type="button"
               class="button--maps" data-section="maps"
@@ -31,7 +31,7 @@
               :aria-label="messageWorlds"
               :aria-expanded="mapsVisible"
               @click="handleSectionClick" @keydown="handleSectionKeydown">
-				<SvgIcon ref="maps-icon" name="maps"></SvgIcon>
+				{{ curretnWorld }}
 			</button>
 			<button ref="markers-button" v-if="markerUIEnabled" type="button"
               class="button--markers" data-section="markers"
@@ -114,7 +114,14 @@ export default defineComponent({
 				//Show following alongside playerlist on small screens
 				return (!smallScreen.value && following.value)
 					|| (smallScreen.value && playersVisible.value);
-			});
+			}),
+
+			currentServer = computed({
+				get: () => store.state.currentServer ? store.state.currentServer.label : undefined,
+				set: (value) => value && store.commit(MutationTypes.SET_CURRENT_SERVER, value)
+			}),
+			curretnWorld = computed(() => store.state.currentWorld ? store.state.currentWorld.displayName : undefined)
+			;
 
 		//Arrow key section navigation
 		const handleSidebarKeydown = (e: KeyboardEvent) => {
@@ -183,6 +190,9 @@ export default defineComponent({
 			handleSidebarKeydown,
 			handleSectionKeydown,
 			handleSectionClick,
+
+			currentServer,
+			curretnWorld,
 		}
 	},
 });

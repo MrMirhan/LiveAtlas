@@ -20,7 +20,7 @@
 		'section--collapsible': collapsible,
 		'section--collapsed': collapsed
 	}" :data-section="name">
-		<h2 class="section__heading">
+		<!-- <h2 class="section__heading">
 			<button :id="`${name}-heading`" type="button"
               @click.prevent="toggle" :title="title"
               :aria-expanded="!collapsed" :aria-controls="`${name}-content`">
@@ -29,7 +29,7 @@
 				</span>
 				<SvgIcon v-if="collapsible" name="arrow"></SvgIcon>
 			</button>
-		</h2>
+		</h2> -->
 		<div :id="`${name}-content`" class="section__content" :aria-hidden="collapsed">
 			<slot></slot>
 		</div>
