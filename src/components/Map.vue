@@ -336,11 +336,15 @@ export default defineComponent({
 					), target.options);
 				} else { // Location
 					const location = store.state.currentMap?.locationToLatLng(target.location) as LatLng;
-					target.options = {
-						animate: false,
-						noMoveStart: false,
+					if (this.leaflet!.getZoom() < 1) {
+						this.leaflet!.setZoom(1);
+						// very hacky method to retriger openPopup after the zoom
+						if (target.layerId) {
+							setTimeout(() => useStore().commit(MutationTypes.SET_VIEW_TARGET, { location: target.location, layerId: "0" }), 300);
+							setTimeout(() => useStore().commit(MutationTypes.SET_VIEW_TARGET, target), 300);							
+						}
 					}
-					this.leaflet!.panTo(location, target.options as PanOptions);
+					this.leaflet!.panTo(location, { animate: false })
 				}
 			}
 		},
