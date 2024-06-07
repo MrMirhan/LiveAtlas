@@ -336,6 +336,10 @@ export default defineComponent({
 					), target.options);
 				} else { // Location
 					const location = store.state.currentMap?.locationToLatLng(target.location) as LatLng;
+					target.options = {
+						animate: false,
+						noMoveStart: false,
+					}
 					this.leaflet!.panTo(location, target.options as PanOptions);
 				}
 			}
