@@ -22,6 +22,8 @@
 	display: flex;
 	align-items: center;
 
+    background: var(--background-marker); // 设置共享的背景
+
 	&.marker--player {
    		transition: transform 0.3s ease-in 0s;
 		height: 1.2rem;
@@ -187,13 +189,11 @@
 		line-height: 1;
 		white-space: pre-line;
 		color: var(--text-marker);
-		background: var(--background-marker);
 		padding: 0.2rem;
 		display: none;
 		width: max-content;
 		max-width: 30rem;
-		position: absolute;
-		left: calc(100% + 0.2rem);
+		position: relative;
 
 		@at-root .leaflet-pane--show-labels .marker__label {
 			display: block !important;
@@ -214,14 +214,14 @@
 
 	&:hover, &:focus {
 		z-index: 1000;
+		outline: auto;
 
 		.marker__label {
 			display: block;
-			outline: auto;
 		}
 	}
 
-	&:focus .marker__label {
+	&:focus {
 		outline: auto;
 	}
 

@@ -98,6 +98,9 @@ export class GenericIcon extends Layer implements Icon<GenericIconOptions> {
 		// }
 
 		this._image?.removeEventListener('mouseover', this._onHover);
+		if (this._label && this._label.parentElement) {
+	        this._label.parentElement.removeChild(this._label);
+    	}
 		this._label = markerLabel.cloneNode(false) as HTMLSpanElement;
 
 		this.update();
