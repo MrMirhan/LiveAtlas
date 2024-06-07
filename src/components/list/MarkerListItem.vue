@@ -15,8 +15,8 @@
   -->
 
 <template>
-	<input :id="`marker-${id}`" type="radio" name="marker" v-bind:value="id" @click.prevent="pan">
-	<label :for="`marker-${id}`" class="marker" :title="marker.tooltip" @click.prevent="pan">
+	<input :id="`marker-${id}`" type="radio" name="marker" v-bind:value="id" @click="pan">
+	<label :for="`marker-${id}`" class="marker" :title="marker.tooltip" @click="pan">
 		<img width="16" height="16" v-if="icon" class="marker__icon" :src="icon" alt="" />
 		<SvgIcon v-else :name="defaultIcon" class="marker__icon"></SvgIcon>
 		<span class="marker__label">{{ marker.tooltip || messageUnnamed }}</span>
