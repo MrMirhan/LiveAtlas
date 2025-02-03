@@ -39,6 +39,17 @@ import {Pl3xmapTileLayer} from "@/leaflet/tileLayer/Pl3xmapTileLayer";
 import {LiveAtlasTileLayer, LiveAtlasTileLayerOptions} from "@/leaflet/tileLayer/LiveAtlasTileLayer";
 import {getDefaultPlayerImage} from "@/util/images";
 
+// RenderersFormat is array of RendererFormat
+// RendererFormat is objcet with properties:
+// - label: string - value: string - icon: string
+export interface RendererFormat {
+	label: string;
+	value: string;
+	icon: string;
+}
+
+export interface RenderersFormat extends Array<RendererFormat> {}
+
 export default class Pl3xmapMapProvider extends MapProvider {
 	private configurationAbort?: AbortController = undefined;
 	private	markersAbort?: AbortController = undefined;
@@ -114,7 +125,7 @@ export default class Pl3xmapMapProvider extends MapProvider {
 		this.worldMarkerUpdateIntervals.clear();
 		this.worldPlayerUpdateIntervals.clear();
 
-		const filteredWorlds = (serverResponse.worlds || []).filter((w: any) => w && !!w.name)
+		const filteredWorlds = (serverResponse.worldSettings || []).filter((w: any) => w && !!w.name)
 			.sort((a: any, b: any) => a.order - b.order);
 
 		filteredWorlds.forEach((world: any, index: number) => {
@@ -172,6 +183,13 @@ export default class Pl3xmapMapProvider extends MapProvider {
 				dimension = 'end';
 			}
 
+			const renderers: RenderersFormat = world.renderers.map((renderer: RendererFormat) => ({
+					label: renderer.label,
+					value: renderer.value,
+					icon: renderer.icon,
+				}
+			));
+
 			const maps: Set<LiveAtlasMapDefinition> = new Set();
 
 			const w = {
@@ -180,6 +198,7 @@ export default class Pl3xmapMapProvider extends MapProvider {
 				dimension,
 				seaLevel: 0,
 				maps,
+				renderers
 			};
 
 			maps.add(Object.freeze(new LiveAtlasMapDefinition({
@@ -197,9 +216,9 @@ export default class Pl3xmapMapProvider extends MapProvider {
 				backgroundDay: 'transparent',
 				backgroundNight: 'transparent',
 
-				nativeZoomLevels: worldResponse.zoom.max || 1,
-				extraZoomLevels: worldResponse.zoom.extra,
-				defaultZoom: worldResponse.zoom.def || 1,
+				nativeZoomLevels: worldResponse.zoom.maxIn || 1,
+				maxZoom: worldResponse.zoom.maxOut || 1,
+				defaultZoom: worldResponse.zoom.default || 1,
 				tileUpdateInterval: worldResponse.tiles_update_interval ? worldResponse.tiles_update_interval * 1000 : undefined,
 
 				center: {x: worldResponse.spawn.x, y: 0, z: worldResponse.spawn.z},
@@ -462,7 +481,7 @@ export default class Pl3xmapMapProvider extends MapProvider {
 		}
 
 		const config = Pl3xmapMapProvider.buildServerConfig(response),
-			worldNames: string[] = (response.worlds || []).filter((world: any) => world && !!world.name)
+			worldNames: string[] = (response.worldSettings || []).filter((world: any) => world && !!world.name)
 				.map((world: any) => world.name);
 
 		const worldResponses = await Promise.all(worldNames.map(name =>

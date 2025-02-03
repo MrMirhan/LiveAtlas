@@ -21,7 +21,7 @@ import {LiveAtlasTileLayer, LiveAtlasTileLayerOptions} from "@/leaflet/tileLayer
 export class Pl3xmapTileLayer extends LiveAtlasTileLayer {
 	constructor(map: LiveAtlasTileLayerOptions) {
 		super(map);
-		this._url = `${map.baseUrl}{z}/{x}_{y}.png`;
+		this._url = `${map.baseUrl}{z}/${map.world.renderers[0].label}/{x}_{y}.png`;
 		Util.setOptions(this, {zoomReverse: false});
 	}
 }
